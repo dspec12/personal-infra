@@ -33,10 +33,10 @@ module "vpc" {
   database_subnets    = ["10.0.10.0/24", "10.0.11.0/24", "10.0.13.0/24"]
 
   enable_nat_gateway = true
-
   enable_vpn_gateway = true
-
   create_database_subnet_group = true
+  enable_dns_hostnames = true
+  enable_dns_support   = true
 
   # VPC endpoint for KMS
   enable_kms_endpoint              = true
