@@ -15,7 +15,7 @@ terraform {
 
 
 data "aws_security_group" "default" {
-  name   = "default"
+  name   = "shared-services"
   vpc_id = module.vpc.vpc_id
 }
 
