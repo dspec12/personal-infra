@@ -28,6 +28,7 @@ module "eks-cluster" {
   version = "0.22.0"
   
   name       = utils
+  region     = var.region
   stage      = var.env_stage
   vpc_id     = "vpc-09c5f5535f9ee0320"
   subnet_ids = data.aws_subnet_ids.private.ids
