@@ -37,7 +37,7 @@ private_subnet_tags =  {
   type = "private"
 }
 
-private_subnet_tags =  {
+public_subnet_tags =  {
   env_stage = "${var.env_stage}"
   type = "public"
 }
