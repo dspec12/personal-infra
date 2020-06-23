@@ -32,6 +32,21 @@ module "vpc" {
   public_subnets  = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]
   database_subnets = ["10.0.10.0/24", "10.0.11.0/24", "10.0.13.0/24"]
 
+private_subnet_tags =  {
+  env_stage = "${var.env_stage}"
+  type = "private"
+}
+
+private_subnet_tags =  {
+  env_stage = "${var.env_stage}"
+  type = "public"
+}
+
+database_subnet_tags =  {
+  env_stage = "${var.env_stage}"
+  type = "database"
+}
+
   enable_nat_gateway = true
   enable_vpn_gateway = true
   create_database_subnet_group = true
