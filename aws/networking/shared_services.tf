@@ -20,6 +20,9 @@ data "aws_security_group" "default" {
 }
 
 
+data "aws_availability_zones" "available" {}
+
+
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "2.43.0"
@@ -27,24 +30,26 @@ module "vpc" {
   name = "shared-services-${var.env_stage}"
   cidr = "10.0.0.0/16"
 
-  azs = var.azs 
+  azs = data.aws_availability_zones.available.names
   private_subnets = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
   public_subnets  = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]
   database_subnets = ["10.0.10.0/24", "10.0.11.0/24", "10.0.13.0/24"]
 
 private_subnet_tags =  {
-  env_stage = "${var.env_stage}"
-  type = "private"
+  Envirnment = "${var.env_stage}"
+  Type = "Private"
+  "kubernetes.io/role/internal-elb" = "1"
 }
 
 public_subnet_tags =  {
-  env_stage = "${var.env_stage}"
-  type = "public"
+  Envirnment = "${var.env_stage}"
+  Type = "Public"
+  "kubernetes.io/role/elb" = "1"
 }
 
 database_subnet_tags =  {
-  env_stage = "${var.env_stage}"
-  type = "database"
+  Envirnment = "${var.env_stage}"
+  Type = "Database"
 }
 
   enable_nat_gateway = true
@@ -57,5 +62,4 @@ database_subnet_tags =  {
   enable_kms_endpoint = true
   kms_endpoint_private_dns_enabled = true
   kms_endpoint_security_group_ids = [data.aws_security_group.default.id]
-
 }
