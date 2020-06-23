@@ -15,7 +15,7 @@ terraform {
 
 
 data "aws_subnet_ids" "private" {
-  vpc_id = "${aws_vpc.shared-services-${var.env_stage}.id}"
+  vpc_id = "vpc-09c5f5535f9ee0320"
 
   tags = {
     type = "private"
@@ -29,7 +29,7 @@ module "eks-cluster" {
   
   name       = utils
   stage      = var.env_stage
-  vpc_id     = "${aws_vpc.shared-services-${var.env_stage}.id}"
+  vpc_id     = "vpc-09c5f5535f9ee0320"
   subnet_ids = data.aws_subnet_ids.private.ids
   kubernetes_version    = 1.16
   oidc_provider_enabled = false
