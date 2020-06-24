@@ -34,7 +34,7 @@ data "aws_eks_cluster_auth" "cluster" {
 # EKS
 module "eks" {
   source       = "terraform-aws-modules/eks/aws"
-  cluster_name = utils
+  cluster_name = "utils"
   subnets      = data.aws_subnet_ids.private.ids
   vpc_id = "vpc-09c5f5535f9ee0320"
   cluster_endpoint_private_access = true
