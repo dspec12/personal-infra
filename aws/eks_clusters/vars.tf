@@ -9,3 +9,9 @@ variable env_stage {
   default     = ""
   description = "Example: dev, stg, prod"
 }
+
+variable vpc_id {
+  type        = string
+  default     = ""
+  description = "VPC to build the cluster in"
+}

@@ -15,7 +15,7 @@ terraform {
 
 
 data "aws_subnet_ids" "private" {
-  vpc_id = "vpc-09c5f5535f9ee0320"
+  vpc_id = var.vpc_id
 
   tags = {
     type = "private"
@@ -36,7 +36,7 @@ module "eks" {
   source       = "terraform-aws-modules/eks/aws"
   cluster_name = "utils"
   subnets      = data.aws_subnet_ids.private.ids
-  vpc_id = "vpc-09c5f5535f9ee0320"
+  vpc_id = var.vpc_id
   cluster_endpoint_private_access = true
   cluster_endpoint_public_access = true
 
@@ -67,7 +67,7 @@ module "eks" {
 # Security Groups
 resource "aws_security_group" "worker_group_mgmt_one" {
   name_prefix = "worker_group_mgmt_one"
-  vpc_id      = module.eks.vpc_id
+  vpc_id      = var.vpc_id
 
   ingress {
     from_port = 22
@@ -82,7 +82,7 @@ resource "aws_security_group" "worker_group_mgmt_one" {
 
 resource "aws_security_group" "worker_group_mgmt_two" {
   name_prefix = "worker_group_mgmt_two"
-  vpc_id      = module.eks.vpc_id
+  vpc_id      = var.vpc_id
 
   ingress {
     from_port = 22
@@ -97,7 +97,7 @@ resource "aws_security_group" "worker_group_mgmt_two" {
 
 resource "aws_security_group" "all_worker_mgmt" {
   name_prefix = "all_worker_management"
-  vpc_id      = module.eks.vpc_id
+  vpc_id      = var.vpc_id
 
   ingress {
     from_port = 22
