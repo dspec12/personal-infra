@@ -37,19 +37,24 @@ provider "kubernetes" {
   cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority.0.data)
   token                  = data.aws_eks_cluster_auth.cluster.token
   load_config_file       = false
-  version                = "~> 1.11"
+  version                = "~> 1.13"
 }
 
 
 # EKS
 module "eks" {
   source       = "terraform-aws-modules/eks/aws"
-  version = "12.1.0"
+  version = "12.2.0"
+  cluster_version = "1.17"
   cluster_name = "utils"
   subnets      = data.aws_subnet_ids.private.ids
   vpc_id = var.vpc_id
+  cluster_endpoint_public_access = false
   cluster_endpoint_private_access = true
-  cluster_endpoint_public_access = true
+
+  cluster_endpoint_private_access_cidrs = [
+    "10.0.0.0/16",
+  ]
 
   tags = {
     Environment = var.env_stage
@@ -60,65 +65,12 @@ module "eks" {
       name                          = "worker-group-1"
       instance_type                 = "t2.small"
       additional_userdata           = "echo foo bar"
-      asg_desired_capacity          = 2
-      additional_security_group_ids = [aws_security_group.worker_group_mgmt_one.id]
+      asg_desired_capacity          = 3
+      # additional_security_group_ids = [aws_security_group.worker_group_mgmt_one.id]
     },
 
-    {
-      name                          = "worker-group-2"
-      instance_type                 = "t2.medium"
-      additional_userdata           = "echo foo bar"
-      additional_security_group_ids = [aws_security_group.worker_group_mgmt_two.id]
-      asg_desired_capacity          = 1
-    },
   ]
 }
 
 
-# Security Groups
-resource "aws_security_group" "worker_group_mgmt_one" {
-  name_prefix = "worker_group_mgmt_one"
-  vpc_id      = var.vpc_id
 
-  ingress {
-    from_port = 22
-    to_port   = 22
-    protocol  = "tcp"
-
-    cidr_blocks = [
-      "10.0.0.0/8",
-    ]
-  }
-}
-
-resource "aws_security_group" "worker_group_mgmt_two" {
-  name_prefix = "worker_group_mgmt_two"
-  vpc_id      = var.vpc_id
-
-  ingress {
-    from_port = 22
-    to_port   = 22
-    protocol  = "tcp"
-
-    cidr_blocks = [
-      "192.168.0.0/16",
-    ]
-  }
-}
-
-resource "aws_security_group" "all_worker_mgmt" {
-  name_prefix = "all_worker_management"
-  vpc_id      = var.vpc_id
-
-  ingress {
-    from_port = 22
-    to_port   = 22
-    protocol  = "tcp"
-
-    cidr_blocks = [
-      "10.0.0.0/8",
-      "172.16.0.0/12",
-      "192.168.0.0/16",
-    ]
-  }
-}
