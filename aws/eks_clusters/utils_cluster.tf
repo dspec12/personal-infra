@@ -49,6 +49,7 @@ module "eks" {
   cluster_name = "utils"
   subnets      = data.aws_subnet_ids.private.ids
   vpc_id = var.vpc_id
+  wait_for_cluster_cmd          = "until curl -k -s $ENDPOINT/healthz >/dev/null; do sleep 4; done"
   cluster_endpoint_public_access = false
   cluster_endpoint_private_access = true
 
