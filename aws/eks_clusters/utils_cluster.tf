@@ -45,7 +45,7 @@ provider "kubernetes" {
 module "eks" {
   source       = "terraform-aws-modules/eks/aws"
   version = "12.1.0"
-  cluster_version = "1.16"
+  cluster_version = "1.17"
   cluster_name = "utils"
   subnets      = data.aws_subnet_ids.private.ids
   vpc_id = var.vpc_id
