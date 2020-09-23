@@ -39,14 +39,14 @@ private_subnet_tags =  {
   Envirnment = "${var.env_stage}"
   Type = "Private"
   "kubernetes.io/role/internal-elb" = "1"
-  "kubernetes.io/cluster/test-cluster" = "shared"
+  "kubernetes.io/cluster/eksctl-test-cluster-cluster" = "shared"
 }
 
 public_subnet_tags =  {
   Envirnment = "${var.env_stage}"
   Type = "Public"
   "kubernetes.io/role/elb" = "1"
-  "kubernetes.io/cluster/test-cluster" = "shared"
+  "kubernetes.io/cluster/eksctl-test-cluster-cluster" = "shared"
 }
 
 database_subnet_tags =  {
