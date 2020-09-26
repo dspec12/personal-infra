@@ -5,7 +5,7 @@ provider "aws" {
 
 terraform {
   backend "remote" {
-    hostname = "app.terraform.io"
+    # hostname = "app.terraform.io"
     organization = "dspec12-personal"
     workspaces {
       prefix = "networking-"
