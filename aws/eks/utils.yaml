@@ -1,0 +1,29 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: test-cluster
+  region: us-east-1
+
+vpc:
+  subnets:
+    public:
+      us-east-1a: { id: subnet-0685ca69a755ff461 }
+    private:
+      us-east-1a: { id: subnet-0678d69a01db1ed07}
+      us-east-1b: { id: subnet-0f80615ccad365a5d }
+      us-east-1c: { id: subnet-0f02b9fc6758078fc }
+  clusterEndpoints:
+    publicAccess: true
+
+managedNodeGroups:
+  - name: ng1
+    instanceType: t3.medium
+    minSize: 1
+    maxSize: 4
+    desiredCapacity: 3
+    volumeSize: 100
+    privateNetworking: true
+    ssh:
+      allow: true
+      publicKeyPath: "/home/dan/.ssh/id_rsa.pub"
