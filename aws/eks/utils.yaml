@@ -7,6 +7,8 @@ metadata:
 
 vpc:
   subnets:
+    public:
+      us-east-1a: { id: subnet-0685ca69a755ff461 }
     private:
       us-east-1a: { id: subnet-0678d69a01db1ed07}
       us-east-1b: { id: subnet-0f80615ccad365a5d }
@@ -15,12 +17,12 @@ vpc:
     publicAccess: true
 
 managedNodeGroups:
-  - name: nodes-1
+  - name: ng1
     instanceType: t3.medium
     minSize: 1
     maxSize: 4
     desiredCapacity: 3
-    volumeSize: 20
+    volumeSize: 100
     privateNetworking: true
     ssh:
       allow: true
